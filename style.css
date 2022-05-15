@@ -25,7 +25,7 @@ input[type="number"] {
 input[type="submit"], input[type="button"] {
 	padding: 8px 12px;
 	border-radius: 4px;
-	margin: 15px 6px;
+	margin: 4px;
 	color: #f3f3f3;
 	background-color: #666;
 	border: 2px solid #f3f3f3;
@@ -34,6 +34,10 @@ input[type="submit"], input[type="button"] {
 
 #graph-output {
 	text-align: center;
+}
+
+#button-row {
+	margin-top: 10px;
 }
 
 select {
