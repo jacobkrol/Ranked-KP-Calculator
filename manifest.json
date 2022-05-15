@@ -1,6 +1,6 @@
 {
-	"name": "Simple PWA",
-	"short_name": "Simple PWA",
+	"name": "Ranked KP Calculator",
+	"short_name": "KP Calc",
 	"display": "standalone",
 	"start_url": "./?utm_source=pwa_install",
 	"scope": ".",
