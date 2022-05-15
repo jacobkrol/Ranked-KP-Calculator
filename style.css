@@ -22,14 +22,18 @@ input[type="number"] {
 	margin-left: 4px;
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="button"] {
 	padding: 8px 12px;
 	border-radius: 4px;
-	margin: 15px;
+	margin: 15px 10px;
 	color: #f3f3f3;
 	background-color: #666;
 	border: 2px solid #f3f3f3;
 	cursor: pointer;
+}
+
+#graph-output {
+	text-align: center;
 }
 
 select {

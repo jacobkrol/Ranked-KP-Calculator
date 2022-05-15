@@ -120,6 +120,7 @@
 		<input type="submit" value="Submit" />
 		<input type="button" value="View Graph" id="graph" />
 		<input type="button" value="Raw Data" id="raw" />
+		<input type="button" value="Pop Match" id="pop" />
 	</form>
 
 	<p id="raw-output"></p>
@@ -136,20 +137,19 @@
 		evt.preventDefault();
 		
 		const { elements } = document.forms[0];
-		console.log(elements);
 		let realkp = 0;
-		if(elements.kp) {
+		if(!isNaN(parseInt(elements.kp.value))) {
 
 			// use given kp
-			realkp = Number(elements.kp.value);
+			realkp = parseInt(elements.kp.value);
 
 		} else {
 
 			// calculate kp from total RP
-			const rp = Number(elements.rp.value);
-			const rank = Number(elements.rank.value);
-			const division = Number(elements.division.value);
-			const placement = Number(elements.placement.value);
+			const rp = parseInt(elements.rp.value);
+			const rank = parseInt(elements.rank.value);
+			const division = parseInt(elements.division.value);
+			const placement = parseInt(elements.placement.value);
 			const entryCost = rank === 0 ? 0 : 15 + 3 * (4 - division) + 12 * (rank - 1);
 			const placementRP = [125, 95, 70, 55, 45, 30, 20, 20, 10, 10, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0][placement-1];
 			realkp = rp + entryCost - placementRP;
@@ -157,20 +157,18 @@
 		}
 
 		// calculate earned KP
-		const effectiveKills = Number(elements.kills.value) + 0.5 * Number(elements.participation.value);
-		const placement = Number(elements.placement.value);
+		const effectiveKills = parseInt(elements.kills.value) + 0.5 * parseInt(elements.participation.value);
+		const placement = parseInt(elements.placement.value);
 		const pointsPerKill = [25, 23, 20, 18, 16, 14, 12, 12, 10, 10, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1][placement-1];
 		const earnedkp = effectiveKills * pointsPerKill;
 
 		const matchData = {
-			kills: Number(elements.kills.value),
-			participation: Number(elements.participation.value),
-			placement: Number(elements.placement.value),
+			kills: parseInt(elements.kills.value),
+			participation: parseInt(elements.participation.value),
+			placement: parseInt(elements.placement.value),
 			realkp,
 			earnedkp
 		};
-
-		console.log(matchData);
 
 		if(isNaN(matchData.kills) || isNaN(matchData.participation) || isNaN(matchData.placement) || isNaN(matchData.realkp) || isNaN(matchData.earnedkp)) {
 			alert("Invalid Form");
@@ -179,7 +177,6 @@
 
 		// save to local data
 		const oldData = JSON.parse(window.localStorage.getItem("data"));
-		console.log(oldData, Array.isArray(oldData));
 		const newData = !Array.isArray(oldData) ? [matchData] : [...oldData, matchData];
 		window.localStorage.setItem("data", JSON.stringify(newData));
 
@@ -188,10 +185,11 @@
 	 document.getElementById("graph").addEventListener("click", (evt) => {
 		// set the dimensions and margins of the graph
 		const margin = {top: 10, right: 30, bottom: 30, left: 60},
-				width = 460 - margin.left - margin.right,
-				height = 400 - margin.top - margin.bottom;
+				width = 410 - margin.left - margin.right,
+				height = 350 - margin.top - margin.bottom;
 
 		// append the svg object to the body of the page
+		document.getElementById("graph-output").innerHTML = "";
 		const svg = d3.select("#graph-output")
 			.append("svg")
 				.attr("width", width + margin.left + margin.right)
@@ -234,5 +232,11 @@
 
 	 document.getElementById("raw").addEventListener("click", (evt) => {
 		 document.getElementById("raw-output").innerText = window.localStorage.getItem("data");
+	 });
+
+	 document.getElementById("pop").addEventListener("click", (evt) => {
+		let data = JSON.parse(window.localStorage.getItem("data"));
+		alert('Popping the latest match data:\n\n' + JSON.stringify(data.pop()));
+		window.localStorage.setItem("data", JSON.stringify(data));
 	 });
  </script>
